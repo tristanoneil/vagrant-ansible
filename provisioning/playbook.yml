@@ -1,0 +1,11 @@
+---
+- hosts: all
+  tasks:
+    - name: run apt-get update
+      apt: update_cache=yes
+    - name: install python-pycurl required by apt_repository module
+      apt: pkg=python-pycurl state=latest
+    - name: add brightbox ruby-ng repository
+      apt_repository: repo=ppa:brightbox/ruby-ng
+    - name: install ruby 2.1
+      apt: pkg=ruby2.1 state=latest

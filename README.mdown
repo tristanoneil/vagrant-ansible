@@ -1,0 +1,20 @@
+# Vagrant Ansible
+
+Vagrant configuration with Ansible for provisioning.
+
+## Getting Started
+
+1. Install VirtualBox for your platofmr, you may download a package [here](https://www.virtualbox.org/wiki/Downloads)
+1. Install Vagrant for your platform, you may download a package [here](http://www.vagrantup.com/downloads.html)
+1. Install Python
+
+  _The version of Python that comes with OSX has some issues, so it's probably best to install via Homebrew._
+
+  ```bash
+  brew install python
+  brew link python
+  ```
+
+1. Install pip with `sudo easy_install pip`
+1. Install ansible with `sudo pip install ansible`
+1. Setup and provision Vagrant box with `vagrant up`
