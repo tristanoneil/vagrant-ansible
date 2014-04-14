@@ -1,11 +1,44 @@
 ---
 - hosts: all
+  vars:
+    postgres_auth_method: trust
+
   tasks:
     - name: run apt-get update
       apt: update_cache=yes
+
     - name: install python-pycurl required by apt_repository module
       apt: pkg=python-pycurl state=latest
+
+    - name: install psycopg2 required by postgresql_user module
+      apt: pkg=python-psycopg2 state=latest
+
     - name: add brightbox ruby-ng repository
       apt_repository: repo=ppa:brightbox/ruby-ng
+
     - name: install ruby 2.1
       apt: pkg=ruby2.1 state=latest
+
+    - name: install postgresql
+      apt: pkg=postgresql state=latest
+
+    - name: install git
+      apt: pkg=git state=latest
+
+    - name: create postgres authentication configuration then restart postgresql
+      template: src=templates/pg_hba.conf.j2 dest=/etc/postgresql/9.1/main/pg_hba.conf
+
+    - name: restart postgresql so configuration takes effect
+      service: name=postgresql state=reloaded
+
+    - name: create postgres user
+      postgresql_user: name=vagrant role_attr_flags=SUPERUSER
+
+    - name: checkout application
+      git: repo=https://github.com/tristanoneil/notes.git dest=/srv/notes
+
+    - name: install bundler
+      gem: name=bundler state=latest
+
+    - name: bundle install
+      command: bundle install --without test development chdir=/srv/notes
